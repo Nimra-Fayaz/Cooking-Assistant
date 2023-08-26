@@ -48,21 +48,17 @@ def get_nutrition(recipes):
     APP_ID = '9de75d97'
     API_KEY = '28229e90a39a85f8c8e1ec39d6a17418'
     nutritionix_client = Nutritionix(app_id=APP_ID, api_key=API_KEY)
-    
-    # Assuming recipes is a string containing recipe instructions
-    nutrition_data = nutritionix_client.natural.nutrients(query=recipes)
-    
+    nutrition_data = nutritionix_client.natural.nutrients(query=recipe_text)
     calories = nutrition_data['calories']
     protein = nutrition_data['protein']
     carbs = nutrition_data['carbs']
-    
     return calories, protein, carbs
 
 
 
 # Streamlit UI
 import streamlit as st
-st.title("Food Ingredient Identifier")
+st.title("Your Cooking Assistant")
 # File uploader widget
 uploaded_file = st.file_uploader("Upload an ingredient photo", type=["jpg", "jpeg", "png"])
 # Check if an image has been uploaded
@@ -74,7 +70,7 @@ if uploaded_file is not None:
         st.success("Here are some recipe ideas:")
         st.write(recipes)
         st.write(predicted_ingredients)
-        calories, protein, carbs = get_nutrition(recipes) 
+        calories, protein, carbs = calculate_recipe_nutrition(recipes)
         st.write(f"Calories: {calories}")
         st.write(f"Protein: {protein}")
         st.write(f"Carbs: {carbs}")
