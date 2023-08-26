@@ -1,6 +1,6 @@
 import base64
 from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
-from clarifai_grpc.grpc.api import service_pb2_grpc, resources_pb2
+from clarifai_grpc.grpc.api import service_pb2_grpc, resources_pb2, service_pb2
 
 def get_ingredients(image):
     # Create a Clarifai channel
@@ -33,6 +33,7 @@ def get_ingredients(image):
         # Handle case where no concepts were found
         print("No predicted ingredients found in the response.")
         return []
+
 
 
 
