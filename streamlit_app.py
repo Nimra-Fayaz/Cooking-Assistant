@@ -3,8 +3,7 @@ def get_ingredients(image_file):
     # Initialize Clarifai API with your PAT
     clarifai_app = ClarifaiApp(
     api_key='c104074359ea40a0a22fab914c2caee2',
-    api_base='https://api.clarifai.com/v2/'
-)
+    api_base='https://api.clarifai.com/v2/')
 
     # Specify app details
     APP_ID = 'main'
