@@ -23,7 +23,7 @@ import replicate   # importing replicate
 def get_recipes(predicted_ingredients):
   i_prompt = f"Suggest recipes using these ingredients: {predicted_ingredients}" #updated part
   output_propmt=replicate.run('replicate/llama-2-70b-chat:58d078176e02c219e11eb4da5a02a7830a283b14cf8f94537af893ccff5ee781',input={"prompt":f"{pre} {i_prompt} Assistant:",#prompts
-  "temperature":0.1,"top_p":0.9 , "max_length":128,"repetition_penalty":1})#model parameters
+                              "temperature":0.1,"top_p":0.9 , "max_length":128,"repetition_penalty":1})#model parameters
   recipes=" "
   for i in output_propmt:
          recipes+=i
@@ -52,11 +52,11 @@ uploaded_file = st.file_uploader("Upload an ingredient photo", type=["jpg", "jpe
 if uploaded_file is not None:
     # Call the get_ingredients function with the uploaded image
     predicted_ingredients = get_ingredients(uploaded_file.read())
-if st.button("Get Recommendations"):
+if st.button("Get Recipes"):
   recipes = get_recipes(predicted_ingredients)
-  calories, protein, carbs = get_nutrition(recipes[0])
   st.success("Here are some recipe ideas:")
   st.write(recipes)
+  calories, protein, carbs = get_nutrition(recipes[0])
   st.write(f"Calories: {calories}")
   st.write(f"Protein: {protein}")
   st.write(f"Carbs: {carbs}")
