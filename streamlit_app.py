@@ -1,4 +1,5 @@
-!pip install clarifai==2.6.0
+!pip install streamlit
+!pip install clarifai==2.6.2
 from clarifai.rest import ClarifaiApp
 def get_ingredients(image_file):
     # Initialize Clarifai API with your PAT
