@@ -16,6 +16,7 @@ def get_ingredients(image):
     metadata = (('authorization', 'Key c104074359ea40a0a22fab914c2caee2'),)
     # Make the gRPC call with the metadata
     response = stub.PostModelOutputs(request, metadata=metadata)
+    print(response)
     # Extract predicted ingredients from the response
     predicted_ingredients = [concept.name for concept in response.outputs[0].data.concepts]
     return predicted_ingredients
