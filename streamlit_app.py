@@ -23,26 +23,23 @@ def get_recipes(predicted_ingredients):
   output_propmt=replicate.run('replicate/llama-2-70b-chat:58d078176e02c219e11eb4da5a02a7830a283b14cf8f94537af893ccff5ee781',input={"prompt":f"{pre} {i_prompt} Assistant:",#prompts
   "temperature":0.1,"top_p":0.9 , "max_length":128,"repetition_penalty":1})#model parameters
   recipes=" "
-
   for i in output_propmt:
          recipes+=i
-
   return recipes
 
 
 # Nutritionix nutrition data function
 !pip install nutritionix
 from nutritionix import Nutritionix
-
 def get_nutrition(recipes):
     APP_ID = '9de75d97'
     API_KEY ='28229e90a39a85f8c8e1ec39d6a17418'
     nutritionix_client = Nutritionix(app_id=APP_ID, api_key=API_KEY)
     nutrition_data = nutritionix_client.natural.nutrients(recipes)
-    return nutrition_data['calories'], nutrition_data['protein'], nutrition_data['carbs'] # etc
     calories = nutrition_data['calories']
     protein = nutrition_data['protein']
     carbs = nutrition_data['carbs']
+    return calories, protein, carbs
 
 
 # Streamlit UI
@@ -51,16 +48,13 @@ import streamlit as st
 st.title("Food Ingredient Identifier")
 # File uploader widget
 uploaded_file = st.file_uploader("Upload an ingredient photo", type=["jpg", "jpeg", "png"])
-
 # Check if an image has been uploaded
 if uploaded_file is not None:
     # Call the get_ingredients function with the uploaded image
     predicted_ingredients = get_ingredients(uploaded_file)
-
 if st.button("Get Recommendations"):
   recipes = get_recipes(predicted_ingredients)
   calories, protein, carbs = get_nutrition(recipes[0])
-
   st.success("Here are some recipe ideas:")
   st.write(recipes)
   st.write(f"Calories: {calories}")
