@@ -1,5 +1,5 @@
 streamlit
 clarifai-grpc
 llama2
-nutritionix
+nutritionix-python3
 replicate
