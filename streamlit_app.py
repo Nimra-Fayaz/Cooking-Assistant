@@ -74,3 +74,6 @@ if uploaded_file is not None:
         st.write(f"Calories: {calories}")
         st.write(f"Protein: {protein}")
         st.write(f"Carbs: {carbs}")
+
+if __name__ == "__main__":
+    main()
