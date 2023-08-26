@@ -1,6 +1,5 @@
 streamlit
 clarifai
-ClarifaiApp
 llama2
 nutritionix
 replicate
