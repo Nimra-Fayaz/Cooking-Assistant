@@ -1,4 +1,4 @@
-!pip install clarifai
+!pip install clarifai==2.6.0
 from clarifai.rest import ClarifaiApp
 def get_ingredients(image_file):
     # Initialize Clarifai API with your PAT
