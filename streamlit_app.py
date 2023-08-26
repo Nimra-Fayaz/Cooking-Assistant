@@ -48,7 +48,7 @@ uploaded_file = st.file_uploader("Upload an ingredient photo", type=["jpg", "jpe
 # Check if an image has been uploaded
 if uploaded_file is not None:
     # Call the get_ingredients function with the uploaded image
-    predicted_ingredients = get_ingredients(uploaded_file)
+    predicted_ingredients = get_ingredients(uploaded_file.read())
 if st.button("Get Recommendations"):
   recipes = get_recipes(predicted_ingredients)
   calories, protein, carbs = get_nutrition(recipes[0])
