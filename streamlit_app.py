@@ -1,5 +1,5 @@
-pip install streamlit
-pip install clarifai==2.6.2
+!pip install streamlit
+!pip install clarifai==2.6.2
 from clarifai.rest import ClarifaiApp
 def get_ingredients(image_file):
     # Initialize Clarifai API with your PAT
@@ -14,7 +14,7 @@ def get_ingredients(image_file):
     return predicted_ingredients
 
 
-pip install llama2 replicate
+!pip install llama2 replicate
 import os   # importing os for accessing tokens
 os.environ["REPLICATE_API_TOKEN"]="r8_9V0jsom0JgBxih0h9oKIm7SkTMlEh5G43WxfH"  # placing key
 import replicate   # importing replicate
@@ -30,7 +30,7 @@ def get_recipes(predicted_ingredients):
 
 
 # Nutritionix nutrition data function
-pip install nutritionix
+!pip install nutritionix
 from nutritionix import Nutritionix
 def get_nutrition(recipes):
     APP_ID = '9de75d97'
