@@ -1,8 +1,8 @@
 from clarifai.rest import ClarifaiApp
 def get_ingredients(uploaded_file):
     # Initialize Clarifai API with your PAT
-    clarifai_app = ClarifaiApp("c104074359ea40a0a22fab914c2caee2")
-
+    clarifai_app = ClarifaiApp(api_key='24cebb23b8174fc38c47220a9525aeae')
+    
     # Specify app details
     APP_ID = 'main'
     # Model details and version
