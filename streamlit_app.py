@@ -16,7 +16,9 @@ def get_ingredients(image):
     )
 
     # Set up the authorization metadata
-    metadata = (('authorization', 'Key c104074359ea40a0a22fab914c2caee2'),)
+    metadata = (('authorization', 'Key c104074359ea40a0a22fab914c2caee2'),
+            ('x-user-id', 'clarifai'),
+            ('x-app-id', 'main'))
 
     # Make the gRPC call with the metadata
     response = stub.PostModelOutputs(request, metadata=metadata)
