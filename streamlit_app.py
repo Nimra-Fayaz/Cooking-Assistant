@@ -9,7 +9,7 @@ def get_ingredients(image):
     MODEL_ID = 'food-item-recognition'
     MODEL_VERSION_ID = '1d5fd481e0cf4826aa72ec3ff049e044'
     model = clarifai_app.models.get(MODEL_ID, MODEL_VERSION_ID)
-    response = model.predict_by_filename(image.name)
+    response = model.predict([image])
     predicted_ingredients = [concept.name for concept in response['outputs'][0]['data']['concepts']]
     return predicted_ingredients
 
