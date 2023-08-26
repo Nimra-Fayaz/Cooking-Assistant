@@ -44,11 +44,11 @@ def get_recipes(predicted_ingredients):
 
 from nutritionix import Nutritionix
 
-def get_nutrition(recipes):
+def calculate_recipe_nutrition(recipe_text):
     APP_ID = '9de75d97'
     API_KEY = '28229e90a39a85f8c8e1ec39d6a17418'
     nutritionix_client = Nutritionix(app_id=APP_ID, api_key=API_KEY)
-    nutrition_data = nutritionix_client.natural.nutrients(query=recipe_text)
+     nutrition_data = nutritionix_client.natural.nutrients(query=recipe_text)
     calories = nutrition_data['calories']
     protein = nutrition_data['protein']
     carbs = nutrition_data['carbs']
