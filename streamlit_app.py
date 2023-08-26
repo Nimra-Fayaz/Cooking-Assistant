@@ -70,11 +70,11 @@ uploaded_file = st.file_uploader("Upload an ingredient photo", type=["jpg", "jpe
 if uploaded_file is not None:
     # Call the get_ingredients function with the uploaded image
     predicted_ingredients = get_ingredients(uploaded_file.read())
-if st.button("Get Recipes"):
-  recipes = get_recipes(predicted_ingredients)
-  st.success("Here are some recipe ideas:")
-  st.write(recipes)
-  calories, protein, carbs = get_nutrition(recipes[0])
-  st.write(f"Calories: {calories}")
-  st.write(f"Protein: {protein}")
-  st.write(f"Carbs: {carbs}")
+    if st.button("Get Recipes"):
+        recipes = get_recipes(predicted_ingredients)
+        st.success("Here are some recipe ideas:")
+        st.write(recipes)
+        calories, protein, carbs = get_nutrition(recipes)  # Use 'recipes' instead of 'recipes[0]'
+        st.write(f"Calories: {calories}")
+        st.write(f"Protein: {protein}")
+        st.write(f"Carbs: {carbs}")
