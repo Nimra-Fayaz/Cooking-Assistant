@@ -8,10 +8,8 @@ def get_ingredients(image):
     # Model details and version
     MODEL_ID = 'food-item-recognition'
     MODEL_VERSION_ID = '1d5fd481e0cf4826aa72ec3ff049e044'
-    # Create a Clarifai image object
-
     model = clarifai_app.models.get(MODEL_ID, MODEL_VERSION_ID)
-    response = model.predict([image])
+    response = model.predict_by_filename(image.name)
     predicted_ingredients = [concept.name for concept in response['outputs'][0]['data']['concepts']]
     return predicted_ingredients
 
@@ -20,7 +18,6 @@ import os   # importing os for accessing tokens
 os.environ["REPLICATE_API_TOKEN"]="r8_9V0jsom0JgBxih0h9oKIm7SkTMlEh5G43WxfH"  # placing key
 import replicate   # importing replicate
 def get_recipes(predicted_ingredients):
- # llama = LLAMA()
   i_prompt = f"Suggest recipes using these ingredients: {predicted_ingredients}" #updated part
   output_propmt=replicate.run('replicate/llama-2-70b-chat:58d078176e02c219e11eb4da5a02a7830a283b14cf8f94537af893ccff5ee781',input={"prompt":f"{pre} {i_prompt} Assistant:",#prompts
   "temperature":0.1,"top_p":0.9 , "max_length":128,"repetition_penalty":1})#model parameters
