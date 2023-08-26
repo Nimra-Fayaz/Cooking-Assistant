@@ -4,7 +4,7 @@ from clarifai_grpc.grpc.api import service_pb2, resources_pb2
 
 def get_ingredients(image):
     # Create a Clarifai channel
-    channel = ClarifaiChannel.get_grpc_channel(api_key='c104074359ea40a0a22fab914c2caee2')
+    channel = ClarifaiChannel.get_grpc_channel()
     # Initialize the stub for the V2 API
     stub = service_pb2.V2Stub(channel)
     # Set up the request
@@ -12,8 +12,10 @@ def get_ingredients(image):
         model_id='food-item-recognition',
         inputs=[resources_pb2.Input(data=resources_pb2.Data(image=resources_pb2.Image(base64=image)))],
     )
-    # Make the gRPC call
-    response = stub.PostModelOutputs(request)
+    # Set up the authorization metadata
+    metadata = (('authorization', 'Key c104074359ea40a0a22fab914c2caee2'),)
+    # Make the gRPC call with the metadata
+    response = stub.PostModelOutputs(request, metadata=metadata)
     # Extract predicted ingredients from the response
     predicted_ingredients = [concept.name for concept in response.outputs[0].data.concepts]
     return predicted_ingredients
