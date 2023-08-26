@@ -27,7 +27,7 @@ def get_ingredients(image):
     else:
         # Handle case where no concepts were found
         print("No predicted ingredients found in the response.")
-        return []
+     
 
 
 import os   # importing os for accessing tokens
