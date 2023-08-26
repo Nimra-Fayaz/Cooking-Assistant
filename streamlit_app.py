@@ -42,6 +42,7 @@ def get_recipes(predicted_ingredients):
          recipes+=i
   return recipes
 
+
 from nutritionix import Nutritionix
 
 def get_nutrition(recipes):
