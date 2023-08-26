@@ -1,5 +1,6 @@
 streamlit
-clarifai==2.6.2
+clarifai
+ClarifaiApp
 llama2
 nutritionix
 replicate
