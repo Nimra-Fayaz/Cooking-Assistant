@@ -1,6 +1,6 @@
 from clarifai import rest
 from clarifai.rest import ClarifaiApp
-def get_ingredients(uploaded_file):
+def get_ingredients(image):
 # Initialize Clarifai API with your PAT
     clarifai_app = ClarifaiApp(api_key='c104074359ea40a0a22fab914c2caee2')
     USER_ID = 'clarifai'
