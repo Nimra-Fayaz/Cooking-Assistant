@@ -1,5 +1,5 @@
 streamlit
-clarifai
+clarifai-grpc
 llama2
 nutritionix
 replicate
