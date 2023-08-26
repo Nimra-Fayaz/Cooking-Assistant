@@ -73,6 +73,7 @@ if uploaded_file is not None:
         recipes = get_recipes(predicted_ingredients)
         st.success("Here are some recipe ideas:")
         st.write(recipes)
+        st.write(predicted_ingredients)
         calories, protein, carbs = get_nutrition(recipes) 
         st.write(f"Calories: {calories}")
         st.write(f"Protein: {protein}")
