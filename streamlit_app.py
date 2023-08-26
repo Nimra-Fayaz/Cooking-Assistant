@@ -4,7 +4,7 @@ from clarifai_grpc.grpc.api import service_pb2, resources_pb2
 
 def get_ingredients(image):
     # Create a Clarifai channel
-    channel = ClarifaiChannel.get_grpc_channel()
+    channel = ClarifaiChannel.get_grpc_channel(api_key='c104074359ea40a0a22fab914c2caee2')
     # Initialize the stub for the V2 API
     stub = service_pb2.V2Stub(channel)
     # Set up the request
