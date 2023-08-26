@@ -1,16 +1,14 @@
 from clarifai.rest import ClarifaiApp
-def get_ingredients(image_file):
+def get_ingredients(uploaded_file):
     # Initialize Clarifai API with your PAT
-    clarifai_app = ClarifaiApp(
-    api_key='c104074359ea40a0a22fab914c2caee2',
-    api_base='https://api.clarifai.com/v2/')
+    clarifai_app = ClarifaiApp("c104074359ea40a0a22fab914c2caee2")
 
     # Specify app details
     APP_ID = 'main'
     # Model details and version
     MODEL_ID = 'food-item-recognition'
     MODEL_VERSION_ID = '1d5fd481e0cf4826aa72ec3ff049e044'
-    response = clarifai_app.public_models.food_model.predict_by_bytes(image_file.read())
+    response = clarifai_app.public_models.food_model.predict_by_bytes(uploaded_file.read())
     predicted_ingredients = [concept.name for concept in response['outputs'][0]['data']['concepts']]
     return predicted_ingredients
 
