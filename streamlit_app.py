@@ -1,5 +1,6 @@
 from clarifai import rest
 from clarifai.rest import ClarifaiApp
+import base64
 def get_ingredients(image):
 # Initialize Clarifai API with your PAT
     clarifai_app = ClarifaiApp(api_key='c104074359ea40a0a22fab914c2caee2')
@@ -8,8 +9,10 @@ def get_ingredients(image):
     # Model details and version
     MODEL_ID = 'food-item-recognition'
     MODEL_VERSION_ID = '1d5fd481e0cf4826aa72ec3ff049e044'
+    # Convert image bytes to base64-encoded image data
+    base64_image = base64.b64encode(image).decode('utf-8')
     model = clarifai_app.models.get(MODEL_ID, MODEL_VERSION_ID)
-    response = model.predict([image])
+    response = model.predict_by_base64(base64_image)
     predicted_ingredients = [concept.name for concept in response['outputs'][0]['data']['concepts']]
     return predicted_ingredients
 
