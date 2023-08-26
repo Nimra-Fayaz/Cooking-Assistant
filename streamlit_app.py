@@ -5,8 +5,6 @@ def get_ingredients(uploaded_file):
 # Initialize Clarifai API with your PAT
   clarifai_app = ClarifaiApp(api_key='24cebb23b8174fc38c47220a9525aeae')
     
-    # Specify app details
-    APP_ID = 'main'
     # Model details and version
     MODEL_ID = 'food-item-recognition'
     MODEL_VERSION_ID = '1d5fd481e0cf4826aa72ec3ff049e044'
