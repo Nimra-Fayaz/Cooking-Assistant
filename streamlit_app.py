@@ -1,5 +1,4 @@
 from clarifai import rest
-from clarifai.rest import Image as ClImage
 from clarifai.rest import ClarifaiApp
 def get_ingredients(uploaded_file):
 # Initialize Clarifai API with your PAT
@@ -9,7 +8,6 @@ def get_ingredients(uploaded_file):
     MODEL_ID = 'food-item-recognition'
     MODEL_VERSION_ID = '1d5fd481e0cf4826aa72ec3ff049e044'
     # Create a Clarifai image object
-    image = ClImage(file_obj=uploaded_file)
 
     model = clarifai_app.models.get(MODEL_ID, MODEL_VERSION_ID)
     response = model.predict([image])
