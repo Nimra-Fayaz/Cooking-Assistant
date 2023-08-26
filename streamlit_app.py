@@ -58,14 +58,15 @@ def calculate_recipe_nutrition(recipe_text):
 
 # Streamlit UI
 import streamlit as st
-st.title("Your Cooking Assistant")
-# File uploader widget
-uploaded_file = st.file_uploader("Upload an ingredient photo", type=["jpg", "jpeg", "png"])
-# Check if an image has been uploaded
-if uploaded_file is not None:
-    # Call the get_ingredients function with the uploaded image
-    predicted_ingredients = get_ingredients(uploaded_file.read())
-    if st.button("Get Recipes"):
+def main():
+    st.title("Your Cooking Assistant")
+    # File uploader widget
+    uploaded_file = st.file_uploader("Upload an ingredient photo", type=["jpg", "jpeg", "png"])
+    # Check if an image has been uploaded
+    if uploaded_file is not None:
+      # Call the get_ingredients function with the uploaded image
+      predicted_ingredients = get_ingredients(uploaded_file.read())
+      if st.button("Get Recipes"):
         recipes = get_recipes(predicted_ingredients)
         st.success("Here are some recipe ideas:")
         st.write(recipes)
