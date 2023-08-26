@@ -1,19 +1,21 @@
-from clarifai import rest
-from clarifai.rest import ClarifaiApp
 import base64
+from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
+from clarifai_grpc.grpc.api import service_pb2, resources_pb2
+
 def get_ingredients(image):
-# Initialize Clarifai API with your PAT
-    clarifai_app = ClarifaiApp(api_key='c104074359ea40a0a22fab914c2caee2')
-    USER_ID = 'clarifai'
-    APP_ID = 'main'
-    # Model details and version
-    MODEL_ID = 'food-item-recognition'
-    MODEL_VERSION_ID = '1d5fd481e0cf4826aa72ec3ff049e044'
-    # Convert image bytes to base64-encoded image data
-    base64_image = base64.b64encode(image).decode('utf-8')
-    model = clarifai_app.models.get(MODEL_ID, MODEL_VERSION_ID)
-    response = model.predict_by_base64(base64_image)
-    predicted_ingredients = [concept.name for concept in response['outputs'][0]['data']['concepts']]
+    # Create a Clarifai channel
+    channel = ClarifaiChannel.get_grpc_channel()
+    # Initialize the stub for the V2 API
+    stub = service_pb2.V2Stub(channel)
+    # Set up the request
+    request = service_pb2.PostModelOutputsRequest(
+        model_id='food-item-recognition',
+        inputs=[resources_pb2.Input(data=resources_pb2.Data(image=resources_pb2.Image(base64=image)))],
+    )
+    # Make the gRPC call
+    response = stub.PostModelOutputs(request)
+    # Extract predicted ingredients from the response
+    predicted_ingredients = [concept.name for concept in response.outputs[0].data.concepts]
     return predicted_ingredients
 
 
