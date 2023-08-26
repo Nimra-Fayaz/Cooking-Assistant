@@ -44,7 +44,6 @@ def get_nutrition(recipes):
 
 
 # Streamlit UI
-!pip install streamlit
 import streamlit as st
 st.title("Food Ingredient Identifier")
 # File uploader widget
