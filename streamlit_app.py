@@ -16,7 +16,7 @@ def get_ingredients(image):
     )
 
     # Set up the authorization metadata
-    metadata = (('authorization', 'Key c104074359ea40a0a22fab914c2caee2'),
+    metadata = (('authorization', 'Key ea604e81c34544c5b477cdec8f05eb85'),
             ('x-user-id', 'clarifai'),
             ('x-app-id', 'main'))
 
