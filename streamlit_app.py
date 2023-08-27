@@ -48,7 +48,7 @@ def get_ingredients(image):
 
 # Llama-2 Recipe Generation
 def get_recipes(predicted_ingredients):
-    ingredients_text = ', '.join(predicted_ingredients)
+    ingredients_text = ' , '.join(predicted_ingredients)
 
     PAT = '10d7dbdf99ec4129be8d5df61fa323ef'  # Your Clarifai Personal Access Token
     USER_ID = 'meta'
@@ -87,10 +87,12 @@ def get_recipes(predicted_ingredients):
 
     # Since we have one input, one output will exist here
     output = post_model_outputs_response.outputs[0]
+    
+    print("Completion:\n")
+    print(output.data.text.raw)
 
     # Extract the generated recipes from the Llama-2 response
-    generated_recipes = output.data.text.raw if hasattr(output.data.text, 'raw') else ""
-
+    generated_recipes = "Recipe 1: Placeholder recipe\nRecipe 2: Another placeholder recipe"
     return generated_recipes
 
 
@@ -118,4 +120,4 @@ def main():
             
             
 if __name__ == "__main__":
-     main()
+    main()
