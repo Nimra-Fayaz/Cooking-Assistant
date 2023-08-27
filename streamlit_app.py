@@ -55,7 +55,7 @@ def generate_recipes(predicted_ingredients):
     MODEL_VERSION_ID = '79a1af31aa8249a99602fc05687e8f40'  # Your model version ID
     INPUT_PROMPT = f"Suggest recipes using these ingredients: {' , '.join(predicted_ingredients)}"
 
-   channel = ClarifaiChannel.get_grpc_channel()
+    channel = ClarifaiChannel.get_grpc_channel()
     stub = service_pb2_grpc.V2Stub(channel)
 
     metadata = (('authorization', 'Key ' + PAT),)
