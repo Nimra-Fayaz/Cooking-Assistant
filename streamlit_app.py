@@ -61,7 +61,7 @@ def generate_recipes(predicted_ingredients):
     metadata = (('authorization', 'Key ' + PAT),)
     
     i_prompt = f"Generate recipes using these ingredients: {', '.join(predicted_ingredients)}"
-    output_prompt = f"{i_prompt}"
+    output_prompt = f"{i_prompt Assistant: }"
 
     userDataObject = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
 
