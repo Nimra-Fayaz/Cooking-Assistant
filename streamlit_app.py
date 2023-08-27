@@ -79,7 +79,7 @@ def generate_recipes(predicted_ingredients):
         raise Exception("Failed response, status: " + post_model_outputs_response.status.description)
         output = post_model_outputs_response.outputs[0]
 
-    generated_recipes = "".join(output)
+    generated_recipes = ""
     return generated_recipes
 
 # Streamlit UI
