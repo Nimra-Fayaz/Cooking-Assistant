@@ -39,11 +39,11 @@ def get_recipes(predicted_ingredients):
                                   input={"prompt": f"{i_prompt} Assistant:",
                                          "temperature": 0.7, "top_p": 0.8, "max_length": 200, "repetition_penalty": 1.2})
     recipes = "".join(output_prompt)
-    return recipes
+    recipes_text = recipes
+    return recipes_text
 
 
 from nutritionix import Nutritionix
-
 def calculate_recipe_nutrition(recipe_text):
     APP_ID = '9de75d97'
     API_KEY = '28229e90a39a85f8c8e1ec39d6a17418'
@@ -69,6 +69,17 @@ def calculate_recipe_nutrition(recipe_text):
 # Streamlit UI
 import streamlit as st
 def main():
+     # Initialize session_state
+    if 'predicted_ingredients' not in st.session_state:
+        st.session_state.predicted_ingredients = []
+    if 'recipes' not in st.session_state:
+        st.session_state.recipes = ""
+    if 'calories' not in st.session_state:
+        st.session_state.calories = None
+    if 'protein' not in st.session_state:
+        st.session_state.protein = None
+    if 'carbs' not in st.session_state:
+        st.session_state.carbs = None
     st.title("Your Cooking Assistant")
     # File uploader widget
     uploaded_file = st.file_uploader("Upload an ingredient photo", type=["jpg", "jpeg", "png"])
