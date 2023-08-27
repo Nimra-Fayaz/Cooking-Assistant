@@ -50,14 +50,14 @@ if 'predicted_ingredients' not in st.session_state:
 if 'recipes' not in st.session_state:
     st.session_state.recipes = ""
 
-    st.set_page_config(page_title="Your Cooking Assistant", page_icon="🍳", layout="centered", initial_sidebar_state="collapsed")
-    st.title("Your Cooking Assistant")
-    # File uploader widget
-    uploaded_file = st.file_uploader("Upload the Image", type=["jpg", "jpeg", "png"])
+st.set_page_config(page_title="Your Cooking Assistant", page_icon="🍳", layout="centered", initial_sidebar_state="collapsed")
+st.title("Your Cooking Assistant")
+# File uploader widget
+uploaded_file = st.file_uploader("Upload the Image", type=["jpg", "jpeg", "png"])
     # Check if an image has been uploaded
 if uploaded_file is not None:
     # Call the get_ingredients function with the uploaded image
-    predicted_ingredients = get_ingredients(uploaded_file.read())
+    predicted_ingredients = get_ingredients(image.read())
     if st.button("Get Recipes"):
        recipes = get_recipes(predicted_ingredients)
        st.success("Here are some recipe ideas:")
