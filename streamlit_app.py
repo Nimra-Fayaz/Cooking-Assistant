@@ -77,12 +77,9 @@ def generate_recipes(predicted_ingredients):
     if post_model_outputs_response.status.code != status_code_pb2.SUCCESS:
         print(post_model_outputs_response.status)
         raise Exception("Failed response, status: " + post_model_outputs_response.status.description)
+        output = post_model_outputs_response.outputs[0]
 
-    generated_recipes = ""
-    for output in post_model_outputs_response.outputs:
-        text_object = output.data.text
-        generated_recipes += text_object.raw if text_object.raw else ""
-
+    generated_recipes = "".join(output)
     return generated_recipes
 
 # Streamlit UI
