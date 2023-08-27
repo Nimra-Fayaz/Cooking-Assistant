@@ -107,9 +107,9 @@ def main():
         recipes = get_recipes(predicted_ingredients)
 
         st.success("Here are some recipe ideas:")
-        for recipe in generated_recipes:
+        for recipe in recipes.split('\n'):
             st.write(recipe)
-        st.write(predicted_ingredients)
+        st.write("Predicted Ingredients:", predicted_ingredients)
 
 if __name__ == "__main__":
     main()
