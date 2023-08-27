@@ -44,7 +44,6 @@ def get_recipes(predicted_ingredients):
 
 # Streamlit UI
 import streamlit as st
-def main():
      # Initialize session_state
     if 'predicted_ingredients' not in st.session_state:
         st.session_state.predicted_ingredients = []
@@ -64,6 +63,3 @@ def main():
         st.success("Here are some recipe ideas:")
         st.write(recipes)
         st.write(predicted_ingredients)
-
-if __name__ == "__main__":
-    main()
