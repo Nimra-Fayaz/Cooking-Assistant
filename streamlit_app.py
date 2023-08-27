@@ -107,7 +107,7 @@ def main():
 
     if uploaded_file is not None:
         predicted_ingredients = get_ingredients(uploaded_file.read())
-        st.button("Get Recipes"):
+        st.button("Get Recipes")
         generated_recipes = get_recipes(predicted_ingredients)
         st.subheader("Here are some recipe ideas:")
         st.write(generated_recipes)
