@@ -1,6 +1,5 @@
 streamlit
 clarifai-grpc
-clarifai_grpc.grpc.api
 requests
 llama2
 nutritionix
