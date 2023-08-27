@@ -85,7 +85,7 @@ def generate_recipes(predicted_ingredients):
     generated_recipes = ""
     if post_model_outputs_response.status.code == status_code_pb2.SUCCESS:
         for output in post_model_outputs_response.outputs:
-            generated_recipes += f"Generated Recipe:\n{output.data.text.raw}\n\n"
+            generated_recipes += f"\n Generated Recipe: \n {output.data.text.raw} \n \n "
     else:
         generated_recipes = f"Failed to generate recipes. Status: {post_model_outputs_response.status.description}"
     
