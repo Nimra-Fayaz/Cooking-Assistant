@@ -2,4 +2,3 @@ streamlit
 clarifai-grpc
 requests
 llama2
-replicate
