@@ -84,12 +84,8 @@ def generate_recipes(predicted_ingredients):
     # Process the response and extract the generated recipes
     generated_recipes = ""
     if post_model_outputs_response.status.code == status_code_pb2.SUCCESS:
-        for idx, output in enumerate(post_model_outputs_response.outputs):
-            if idx > 0:
-                generated_recipes += "\n\n"  # Add two new lines before each new recipe
-            recipe_lines = output.data.text.raw.strip().split('\n')
-            formatted_recipe = '\n'.join(['\n'.join(recipe_lines[i:i+2]) for i in range(0, len(recipe_lines), 2)])
-            generated_recipes += f"Generated Recipe:\n\n{formatted_recipe}"
+        for output in post_model_outputs_response.outputs:
+            generated_recipes += f"Generated Recipe:\n{output.data.text.raw}\n\n"
     else:
         generated_recipes = f"Failed to generate recipes. Status: {post_model_outputs_response.status.description}"
     
