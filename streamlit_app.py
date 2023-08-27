@@ -50,9 +50,10 @@ def get_ingredients(image):
 def generate_recipes(predicted_ingredients):
     USER_ID = 'meta'  # Your user ID
     PAT = '10d7dbdf99ec4129be8d5df61fa323ef'  # Your Clarifai Personal Access Token
+    USER_ID = 'meta'
     APP_ID = 'Llama-2'  # Your app ID
-    MODEL_ID = 'llama2-13b-chat'  # Your model ID
-    MODEL_VERSION_ID = '79a1af31aa8249a99602fc05687e8f40'  # Your model version ID
+    MODEL_ID = 'llama2-70b-chat'  # Your model ID
+    MODEL_VERSION_ID = '6c27e86364ba461d98de95cddc559cb3'  # Your model version ID
 
     channel = ClarifaiChannel.get_grpc_channel()
     stub = service_pb2_grpc.V2Stub(channel)
@@ -60,34 +61,36 @@ def generate_recipes(predicted_ingredients):
     metadata = (('authorization', 'Key ' + PAT),)
     
     i_prompt = f"Generate recipes using these ingredients: {', '.join(predicted_ingredients)}"
-    output_prompt = f"{i_prompt} Assistant:"
+    output_prompt = f"{i_prompt}"
 
     userDataObject = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
 
     post_model_outputs_response = stub.PostModelOutputs(
-    service_pb2.PostModelOutputsRequest(
-        user_app_id=resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID),
-        model_id=MODEL_ID,
-        version_id=MODEL_VERSION_ID,
-        inputs=[
-            resources_pb2.Input(
-                data=resources_pb2.Data(
-                    text=resources_pb2.Text(raw=output_prompt)
+        service_pb2.PostModelOutputsRequest(
+            user_app_id=userDataObject,
+            model_id=MODEL_ID,
+            version_id=MODEL_VERSION_ID,
+            inputs=[
+                resources_pb2.Input(
+                    data=resources_pb2.Data(
+                        text=resources_pb2.Text(raw=output_prompt)
+                    )
                 )
-            )
-        ]
-    ),
-    metadata=metadata
-)
+            ]
+        ),
+        metadata=metadata
+    )
 
     # Process the response and extract the generated recipes
     generated_recipes = ""
     if post_model_outputs_response.status.code == status_code_pb2.SUCCESS:
-       for output in post_model_outputs_response.outputs:
-           generated_recipes += f"Generated Recipe:\n{output.data.text.raw}\n\n"
+        for output in post_model_outputs_response.outputs:
+            generated_recipes += f"Generated Recipe:\n{output.data.text.raw}\n\n"
     else:
         generated_recipes = f"Failed to generate recipes. Status: {post_model_outputs_response.status.description}"
+    
     return generated_recipes
+
 
 
 
