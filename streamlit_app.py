@@ -94,10 +94,8 @@ def get_recipes(predicted_ingredients):
     recipes = []
 
     # Append recipe information to the recipes list
-    for recipe in recipes_data:
-        title = recipe.get('title', 'Unknown Recipe')
-        instructions = recipe.get('instructions', 'No instructions available')
-        recipes.append(f"{title}: {instructions}")
+    for generated_text in post_model_outputs_response.outputs:
+    recipes.append(f"Recipe: {generated_text}")
 
     return recipes
 
@@ -118,7 +116,8 @@ def main():
         if st.button("Get Recipes"):
             recipes = get_recipes(predicted_ingredients)
             st.success("Here are some recipe ideas:")
-            st.write(recipes)
+            for recipe in recipes:
+                st.write(recipe)  # Indent this line properly
         st.write("Predicted Ingredients:", predicted_ingredients)
 
 if __name__ == "__main__":
