@@ -6,11 +6,11 @@ from clarifai_grpc.grpc.api.status import status_code_pb2
 
 # Clarifai Food Recognition Model
 def get_ingredients(image):
-    PAT = 'ea604e81c34544c5b477cdec8f05eb85'  # Your Clarifai Personal Access Token
+    PAT = '10d7dbdf99ec4129be8d5df61fa323ef'  # Your Clarifai Personal Access Token
     USER_ID = 'clarifai'
     APP_ID = 'main'
     MODEL_ID = 'food-item-v1-recognition'
-    MODEL_VERSION_ID = '79a1af31aa8249a99602fc05687e8f40'
+    MODEL_VERSION_ID = 'dfebc169854e429086aceb8368662641'
 
     channel = ClarifaiChannel.get_grpc_channel()
     stub = service_pb2_grpc.V2Stub(channel)
