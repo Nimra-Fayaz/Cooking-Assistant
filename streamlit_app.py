@@ -87,8 +87,10 @@ def get_recipes(predicted_ingredients):
 
     # Since we have one input, one output will exist here
     output = post_model_outputs_response.outputs[0]
-    
+
+    # Extract the generated recipes from the Llama-2 response
     generated_recipes = output.data.text.raw if hasattr(output.data.text, 'raw') else ""
+
     return generated_recipes
 
 
