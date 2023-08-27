@@ -31,11 +31,11 @@ def get_ingredients(image):
 
 
 import os   # importing os for accessing tokens
-os.environ["REPLICATE_API_TOKEN"]="r8_Hd7A6RojF4LVpaCDzRDcHqUJOJkbIAN3KPZ2M"  # placing key
+os.environ["REPLICATE_API_TOKEN"]="r8_9V0jsom0JgBxih0h9oKIm7SkTMlEh5G43WxfH"  # placing key
 import replicate   # importing replicate
 def get_recipes(predicted_ingredients):
     i_prompt = f"Suggest recipes using these ingredients: {', '.join(predicted_ingredients)}"
-    output_prompt = replicate.run('replicate/llama-2-70b-chat:58d078176e02c219e11eb4da5a02a7830a283b14cf8f94537af893ccff5ee781',
+    output_prompt = replicate.run('replicate/llama-2-70b-chat:2796ee9483c3fd7aa2e171d38f4ca12251a30609463dcfd4cd76703f22e96cdf',
                                   input={"prompt": f"{i_prompt} Assistant:",
                                          "temperature": 0.7, "top_p": 0.8, "max_length": 200, "repetition_penalty": 1.2})
     recipes = "".join(output_prompt)
