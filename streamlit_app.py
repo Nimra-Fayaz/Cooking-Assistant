@@ -68,13 +68,10 @@ def main():
     st.set_page_config(page_title="Your Cooking Assistant", page_icon="🍳", layout="centered", initial_sidebar_state="collapsed")
     st.title("Your Cooking Assistant")
     
-    # File uploader widget
-    uploaded_file = st.file_uploader("Upload the Image", type=["jpg", "jpeg", "png"])
-    
     # Check if an image has been uploaded
-   uploaded_file = st.file_uploader("Upload the Image", type=["jpg", "jpeg", "png"])
-   if uploaded_file is not None:
-    predicted_ingredients = get_ingredients(uploaded_file.read())
+    uploaded_file = st.file_uploader("Upload the Image", type=["jpg", "jpeg", "png"])
+    if uploaded_file is not None:
+       predicted_ingredients = get_ingredients(uploaded_file.read())
         
         if st.button("Get Recipes"):
             recipes = get_recipes(predicted_ingredients)
