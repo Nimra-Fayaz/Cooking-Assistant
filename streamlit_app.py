@@ -63,6 +63,7 @@ def get_recipes(predicted_ingredients):
 
     userDataObject = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
 
+    # Post model outputs request for Clarifai
     post_model_outputs_response = stub.PostModelOutputs(
         service_pb2.PostModelOutputsRequest(
             user_app_id=userDataObject,
@@ -72,14 +73,15 @@ def get_recipes(predicted_ingredients):
                 resources_pb2.Input(
                     data=resources_pb2.Data(
                         text=resources_pb2.Text(
-                            content=ingredients_text  # Pass the ingredients as text content
-                        )
+                            text=ingredients_text  # Pass the ingredients as text content
                     )
                 )
-            ]
-        ),
-        metadata=metadata
-    )
+            )
+        ]
+    ),
+    metadata=metadata
+)
+
 
     if post_model_outputs_response.status.code != status_code_pb2.SUCCESS:
         print(post_model_outputs_response.status)
