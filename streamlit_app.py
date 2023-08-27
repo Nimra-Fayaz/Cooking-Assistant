@@ -88,9 +88,7 @@ def get_recipes(predicted_ingredients):
     # Since we have one input, one output will exist here
     output = post_model_outputs_response.outputs[0]
     
-    print("Completion:\n")
-    print(output.data.text.raw)
-
+    generated_recipes = output.data.text.raw if hasattr(output.data.text, 'raw') else ""
     return generated_recipes
 
 
@@ -109,12 +107,10 @@ def main():
 
     if uploaded_file is not None:
         predicted_ingredients = get_ingredients(uploaded_file.read())
-        
-        if st.button("Get Recipes"):
-            generated_recipes = get_recipes(predicted_ingredients)
-            
-            st.subheader("Here are some recipe ideas:")
-            st.write(generated_recipes)
+        st.button("Get Recipes"):
+        generated_recipes = get_recipes(predicted_ingredients)
+        st.subheader("Here are some recipe ideas:")
+        st.write(generated_recipes)
             
             
 if __name__ == "__main__":
