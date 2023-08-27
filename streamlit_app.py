@@ -88,16 +88,14 @@ def get_recipes(predicted_ingredients):
     # Since we have one input, one output will exist here
     output = post_model_outputs_response.outputs[0]
 
-    print("Completion:\n")
-    print(output.data.text.raw)  # Print the raw content
+    recipes = []  # Initialize the recipes list
 
-    recipes = []
-
-    # Append recipe information to the recipes list
-    for generated_text in post_model_outputs_response.outputs:
+    # Example of generating recipes using the Llama-2 generated text (replace this with actual logic)
+    for generated_text in output.data.text.content:
         recipes.append(f"Recipe: {generated_text}")
 
     return recipes
+
 
 
 
