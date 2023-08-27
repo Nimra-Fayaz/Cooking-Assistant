@@ -63,7 +63,6 @@ def get_recipes(predicted_ingredients):
 
     userDataObject = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
 
-    # Post model outputs request for Clarifai
     post_model_outputs_response = stub.PostModelOutputs(
         service_pb2.PostModelOutputsRequest(
             user_app_id=userDataObject,
@@ -73,24 +72,29 @@ def get_recipes(predicted_ingredients):
                 resources_pb2.Input(
                     data=resources_pb2.Data(
                         text=resources_pb2.Text(
-                            text=ingredients_text  # Pass the ingredients as text content
+                            content=ingredients_text  # Pass the ingredients as text content
+                        )
                     )
                 )
-            )
-        ]
-    ),
-    metadata=metadata
-)
-
+            ]
+        ),
+        metadata=metadata
+    )
 
     if post_model_outputs_response.status.code != status_code_pb2.SUCCESS:
         print(post_model_outputs_response.status)
         raise Exception(f"Post model outputs failed, status: {post_model_outputs_response.status.description}")
 
+    # Since we have one input, one output will exist here
     output = post_model_outputs_response.outputs[0]
-    generated_recipes = output.data.text.raw
 
-    return generated_recipes
+    print("Completion:\n")
+    print(output.data.text.content)  # Print the raw content
+
+    # Rest of your code to fetch and process recipes
+    # ...
+
+    return recipes
 
 
 
