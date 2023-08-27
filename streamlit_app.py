@@ -50,7 +50,7 @@ def get_recipes(predicted_ingredients):
     i_prompt = f"Suggest recipes using these ingredients: {', '.join(predicted_ingredients)}"
     output_prompt = replicate.run('replicate/llama-2-70b-chat:2796ee9483c3fd7aa2e171d38f4ca12251a30609463dcfd4cd76703f22e96cdf',
                                   input={"prompt": f"{i_prompt} Assistant:",
-                                         "temperature": 0.75, "top_p": 1, "max_length": 500, "repetition_penalty": 1.2})
+                                         "temperature": 0.75, "top_p": 0.9, "max_length": 128, "repetition_penalty": 1})
     recipes = "".join(output_prompt)
     return recipes
 
