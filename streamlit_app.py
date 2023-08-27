@@ -13,16 +13,19 @@ def get_ingredients(image):
     )
     # Set up the authorization metadata
     metadata = (('authorization', 'Key ea604e81c34544c5b477cdec8f05eb85'),
-            ('x-user-id', 'clarifai'),
-            ('x-app-id', 'main'))
+                ('x-user-id', 'clarifai'),
+                ('x-app-id', 'main'))
     # Make the gRPC call with the metadata
     response = stub.PostModelOutputs(request, metadata=metadata)
+    
     # Print the entire response for debugging
     print(response)
+    
     # Check if the response contains any outputs
     if response.outputs:
         # Extract predicted ingredients from the response
         predicted_ingredients = [concept.name for concept in response.outputs[0].data.concepts]
+        print("Predicted Ingredients:", predicted_ingredients)  # Print the predicted ingredients
         return predicted_ingredients
     else:
         # Handle case where no concepts were found
@@ -37,7 +40,7 @@ def get_recipes(predicted_ingredients):
     i_prompt = f"Suggest recipes using these ingredients: {', '.join(predicted_ingredients)}"
     output_prompt = replicate.run('replicate/llama-2-70b-chat:2796ee9483c3fd7aa2e171d38f4ca12251a30609463dcfd4cd76703f22e96cdf',
                                   input={"prompt": f"{i_prompt} Assistant:",
-                                         "temperature": 0.75, "top_p": 0.9, "max_length": 128, "repetition_penalty": 1})
+                                         "temperature": 1, "top_p": 1.1, "max_length": 300, "repetition_penalty": 1.2})
     recipes = "".join(output_prompt)
     return recipes
 
