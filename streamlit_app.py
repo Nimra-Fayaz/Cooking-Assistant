@@ -43,15 +43,54 @@ def get_ingredients(image):
     return predicted_ingredients
 
 
-import os   # importing os for accessing tokens
-os.environ["REPLICATE_API_TOKEN"]="r8_QHaXVa7g4LIgDQEFz5GGovA8QPN330H06ROPU"  # placing key
-import replicate   # importing replicate
+PAT = '10d7dbdf99ec4129be8d5df61fa323ef'
+USER_ID = 'meta'
+APP_ID = 'Llama-2'
+MODEL_ID = 'llama2-13b-chat'
+MODEL_VERSION_ID = '79a1af31aa8249a99602fc05687e8f40'
+TEXT_FILE_URL = 'https://samples.clarifai.com/negative_sentence_12.txt'
+
+channel = ClarifaiChannel.get_grpc_channel()
+stub = service_pb2_grpc.V2Stub(channel)
+
+metadata = (('authorization', 'Key ' + PAT),)
+userDataObject = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
+
+post_model_outputs_response = stub.PostModelOutputs(
+    service_pb2.PostModelOutputsRequest(
+        user_app_id=userDataObject,
+        model_id=MODEL_ID,
+        version_id=MODEL_VERSION_ID,
+        inputs=[
+            resources_pb2.Input(
+                data=resources_pb2.Data(
+                    text=resources_pb2.Text(
+                        url=TEXT_FILE_URL
+                    )
+                )
+            )
+        ]
+    ),
+    metadata=metadata
+)
+
+if post_model_outputs_response.status.code != status_code_pb2.SUCCESS:
+    print(post_model_outputs_response.status)
+    raise Exception(f"Post model outputs failed, status: {post_model_outputs_response.status.description}")
+
+output = post_model_outputs_response.outputs[0]
+
+print("Completion:\n")
+print(output.data.text.raw)
+
+# Define a function to get recipes based on ingredients
 def get_recipes(predicted_ingredients):
-    i_prompt = f"Suggest recipes using these ingredients: {', '.join(predicted_ingredients)}"
-    output_prompt = replicate.run('replicate/llama-2-70b-chat:2796ee9483c3fd7aa2e171d38f4ca12251a30609463dcfd4cd76703f22e96cdf',
-                                  input={"prompt": f"{i_prompt} Assistant:",
-                                         "temperature": 0.5, "top_p": 1, "top_k": 50, "max_length": 500, "repetition_penalty": 1})
-    recipes = "".join(output_prompt)
+    # Here you can implement your own logic to generate recipes based on the predicted ingredients
+    recipes = [
+        "Recipe 1: " + ", ".join(predicted_ingredients),
+        "Recipe 2: " + ", ".join(predicted_ingredients),
+        "Recipe 3: " + ", ".join(predicted_ingredients)
+    ]
     return recipes
 
 
@@ -59,25 +98,19 @@ def get_recipes(predicted_ingredients):
 import streamlit as st
 
 def main():
-    # Initialize session_state
-    if 'predicted_ingredients' not in st.session_state:
-        st.session_state.predicted_ingredients = []
-    if 'recipes' not in st.session_state:
-        st.session_state.recipes = ""
-
-    st.set_page_config(page_title="Your Cooking Assistant", page_icon="🍳", layout="centered", initial_sidebar_state="collapsed")
+    st.set_page_config(page_title="Your Cooking Assistant", layout="centered")
     st.title("Your Cooking Assistant")
-    
-    # Check if an image has been uploaded
-    uploaded_file = st.file_uploader("Upload the Image", type=["jpg", "jpeg", "png"])
+
+    uploaded_file = st.file_uploader("Upload an Image", type=["jpg", "jpeg", "png"])
+
     if uploaded_file is not None:
-       predicted_ingredients = get_ingredients(uploaded_file.read())
-        
-    if st.button("Get Recipes"):
-            recipes = get_recipes(predicted_ingredients)
-            st.success("Here are some recipe ideas:")
-            st.write(recipes)
-            st.write(predicted_ingredients)
+        predicted_ingredients = get_ingredients(uploaded_file.read())
+        recipes = get_recipes(predicted_ingredients)
+
+        st.success("Here are some recipe ideas:")
+        for recipe in recipes:
+            st.write(recipe)
+        st.write(predicted_ingredients)
 
 if __name__ == "__main__":
     main()
