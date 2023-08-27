@@ -48,7 +48,7 @@ def get_ingredients(image):
 
 # Llama-2 Recipe Generation
 def get_recipes(predicted_ingredients):
-    ingredients_text = ' , '.join(predicted_ingredients)
+    i_prompt = f"Suggest recipes using these ingredients: {', '.join(predicted_ingredients)}"
 
     PAT = '10d7dbdf99ec4129be8d5df61fa323ef'  # Your Clarifai Personal Access Token
     USER_ID = 'meta'
