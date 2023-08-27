@@ -77,7 +77,7 @@ def main():
             recipes = get_recipes(predicted_ingredients)
             st.success("Here are some recipe ideas:")
             st.write(recipes)
-            # st.write(predicted_ingredients)
+            st.write(predicted_ingredients)
 
 if __name__ == "__main__":
     main()
