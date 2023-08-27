@@ -39,8 +39,7 @@ def get_recipes(predicted_ingredients):
                                   input={"prompt": f"{i_prompt} Assistant:",
                                          "temperature": 0.7, "top_p": 0.8, "max_length": 200, "repetition_penalty": 1.2})
     recipes = "".join(output_prompt)
-    recipes_text = recipes
-    return recipes_text
+    return recipes
 
 
 # Streamlit UI
@@ -51,16 +50,11 @@ def main():
         st.session_state.predicted_ingredients = []
     if 'recipes' not in st.session_state:
         st.session_state.recipes = ""
-    if 'calories' not in st.session_state:
-        st.session_state.calories = None
-    if 'protein' not in st.session_state:
-        st.session_state.protein = None
-    if 'carbs' not in st.session_state:
-        st.session_state.carbs = None
+
     st.set_page_config(page_title="Your Cooking Assistant", page_icon="🍳", layout="centered", initial_sidebar_state="collapsed")
     st.title("Your Cooking Assistant")
     # File uploader widget
-    uploaded_file = st.file_uploader("Upload an ingredient photo", type=["jpg", "jpeg", "png"])
+    uploaded_file = st.file_uploader("Upload the Image", type=["jpg", "jpeg", "png"])
     # Check if an image has been uploaded
     if uploaded_file is not None:
       # Call the get_ingredients function with the uploaded image
@@ -70,10 +64,6 @@ def main():
         st.success("Here are some recipe ideas:")
         st.write(recipes)
         st.write(predicted_ingredients)
-        calories, protein, carbs = calculate_recipe_nutrition(recipes)
-        st.write(f"Calories: {calories}")
-        st.write(f"Protein: {protein}")
-        st.write(f"Carbs: {carbs}")
 
 if __name__ == "__main__":
     main()
