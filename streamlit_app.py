@@ -90,11 +90,15 @@ def get_recipes(predicted_ingredients):
 
     recipes = []  # Initialize the recipes list
 
-    # Example of generating recipes using the Llama-2 generated text (replace this with actual logic)
-    for generated_text in output.data.text.content:
-        recipes.append(f"Recipe: {generated_text}")
+    # Extract generated recipes from the Llama-2 response (use output.data.text.raw if available)
+    generated_recipes = output.data.text.raw if hasattr(output.data.text, 'raw') else []
+
+    # Append generated recipes to the recipes list
+    for generated_recipe in generated_recipes:
+        recipes.append(f"Generated Recipe: {generated_recipe}")
 
     return recipes
+
 
 
 
