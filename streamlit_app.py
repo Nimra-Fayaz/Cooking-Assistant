@@ -57,7 +57,7 @@ def main():
         st.session_state.protein = None
     if 'carbs' not in st.session_state:
         st.session_state.carbs = None
-    st.set_page_config(page_title="Your Cooking Assistant", page_icon="🍳", layout="centered", initial_sidebar_state="collapsed", page_width=800)
+    st.set_page_config(page_title="Your Cooking Assistant", page_icon="🍳", layout="centered", initial_sidebar_state="collapsed")
     st.title("Your Cooking Assistant")
     # File uploader widget
     uploaded_file = st.file_uploader("Upload an ingredient photo", type=["jpg", "jpeg", "png"])
