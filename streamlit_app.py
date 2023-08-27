@@ -43,6 +43,10 @@ def get_ingredients(image):
     return predicted_ingredients
 
 
+import requests
+from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc, status_code_pb2
+
+# Your PAT (Personal Access Token) from Clarifai
 PAT = '10d7dbdf99ec4129be8d5df61fa323ef'
 USER_ID = 'meta'
 APP_ID = 'Llama-2'
@@ -50,48 +54,59 @@ MODEL_ID = 'llama2-13b-chat'
 MODEL_VERSION_ID = '79a1af31aa8249a99602fc05687e8f40'
 TEXT_FILE_URL = 'https://samples.clarifai.com/negative_sentence_12.txt'
 
-channel = ClarifaiChannel.get_grpc_channel()
-stub = service_pb2_grpc.V2Stub(channel)
+def get_recipes(predicted_ingredients):
+    # Convert the predicted ingredients into a single string
+    ingredients_text = ', '.join(predicted_ingredients)
 
-metadata = (('authorization', 'Key ' + PAT),)
-userDataObject = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
+    # Set up Clarifai channel and stub
+    channel = ClarifaiChannel.get_grpc_channel()
+    stub = service_pb2_grpc.V2Stub(channel)
 
-post_model_outputs_response = stub.PostModelOutputs(
-    service_pb2.PostModelOutputsRequest(
-        user_app_id=userDataObject,
-        model_id=MODEL_ID,
-        version_id=MODEL_VERSION_ID,
-        inputs=[
-            resources_pb2.Input(
-                data=resources_pb2.Data(
-                    text=resources_pb2.Text(
-                        url=TEXT_FILE_URL
+    metadata = (('authorization', 'Key ' + PAT),)
+
+    userDataObject = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
+
+    # Post model outputs request for Clarifai
+    post_model_outputs_response = stub.PostModelOutputs(
+        service_pb2.PostModelOutputsRequest(
+            user_app_id=userDataObject,
+            model_id=MODEL_ID,
+            version_id=MODEL_VERSION_ID,
+            inputs=[
+                resources_pb2.Input(
+                    data=resources_pb2.Data(
+                        text=resources_pb2.Text(
+                            content=ingredients_text  # Pass the ingredients as text content
+                        )
                     )
                 )
-            )
-        ]
-    ),
-    metadata=metadata
-)
+            ]
+        ),
+        metadata=metadata
+    )
 
-if post_model_outputs_response.status.code != status_code_pb2.SUCCESS:
-    print(post_model_outputs_response.status)
-    raise Exception(f"Post model outputs failed, status: {post_model_outputs_response.status.description}")
+    if post_model_outputs_response.status.code != status_code_pb2.SUCCESS:
+        print(post_model_outputs_response.status)
+        raise Exception(f"Post model outputs failed, status: {post_model_outputs_response.status.description}")
 
-output = post_model_outputs_response.outputs[0]
+    # Since we have one input, one output will exist here
+    output = post_model_outputs_response.outputs[0]
 
-print("Completion:\n")
-print(output.data.text.raw)
+    print("Completion:\n")
+    print(output.data.text.raw)
 
-# Define a function to get recipes based on ingredients
-def get_recipes(predicted_ingredients):
-    # Here you can implement your own logic to generate recipes based on the predicted ingredients
-    recipes = [
-        "Recipe 1: " + ", ".join(predicted_ingredients),
-        "Recipe 2: " + ", ".join(predicted_ingredients),
-        "Recipe 3: " + ", ".join(predicted_ingredients)
-    ]
-    return recipes
+    response = requests.get(llama2_api_url, headers=headers, params=params)
+    if response.status_code == 200:
+        recipes_data = response.json()
+        recipes = []
+        for recipe in recipes_data:
+            title = recipe.get('title', 'Unknown Recipe')
+            instructions = recipe.get('instructions', 'No instructions available')
+            recipes.append(f"{title}: {instructions}")
+        return recipes
+    else:
+        return ["Unable to fetch recipes at the moment. Please try again later."]
+        
 
 
 # Streamlit UI
