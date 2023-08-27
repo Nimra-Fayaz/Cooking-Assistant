@@ -51,11 +51,10 @@ def calculate_recipe_nutrition(recipes_text):
     
     # Assuming recipe_text is a string containing the generated recipe
     nutrition_data = nutritionix_client.natural.nutrients(query=recipes_text)
-    
-        calories = food_item['nf_calories']
-        protein = food_item['nf_protein']
-        carbs = food_item['nf_total_carbohydrate']
-        return calories, protein, carbs
+    calories = food_item['nf_calories']
+    protein = food_item['nf_protein']
+    carbs = food_item['nf_total_carbohydrate']
+    return calories, protein, carbs
 
 
 
