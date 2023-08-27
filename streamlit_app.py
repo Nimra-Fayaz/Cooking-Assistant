@@ -1,14 +1,16 @@
 import base64
+import requests
 from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
 from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
 from clarifai_grpc.grpc.api.status import status_code_pb2
 
+# Clarifai Food Recognition Model
 def get_ingredients(image):
-    PAT = 'ea604e81c34544c5b477cdec8f05eb85'  # Your Personal Access Token from Clarifai
-    USER_ID = 'clarifai'  # Your user ID
-    APP_ID = 'main'  # Your app ID
-    MODEL_ID = 'food-item-v1-recognition'  # The model ID for food recognition
-    MODEL_VERSION_ID = 'dfebc169854e429086aceb8368662641'  # Optional: Specify a model version ID
+    PAT = 'ea604e81c34544c5b477cdec8f05eb85'  # Your Clarifai Personal Access Token
+    USER_ID = 'clarifai'
+    APP_ID = 'main'
+    MODEL_ID = 'food-item-v1-recognition'
+    MODEL_VERSION_ID = '79a1af31aa8249a99602fc05687e8f40'
 
     channel = ClarifaiChannel.get_grpc_channel()
     stub = service_pb2_grpc.V2Stub(channel)
@@ -43,21 +45,17 @@ def get_ingredients(image):
     return predicted_ingredients
 
 
-import requests
 
-# Your PAT (Personal Access Token) from Clarifai
-PAT = '10d7dbdf99ec4129be8d5df61fa323ef'
-USER_ID = 'meta'
-APP_ID = 'Llama-2'
-MODEL_ID = 'llama2-13b-chat'
-MODEL_VERSION_ID = '79a1af31aa8249a99602fc05687e8f40'
-TEXT_FILE_URL = 'https://samples.clarifai.com/negative_sentence_12.txt'
-
+# Llama-2 Recipe Generation
 def get_recipes(predicted_ingredients):
-    # Convert the predicted ingredients into a single string
     ingredients_text = ', '.join(predicted_ingredients)
 
-    # Set up Clarifai channel and stub
+    PAT = '10d7dbdf99ec4129be8d5df61fa323ef'  # Your Clarifai Personal Access Token
+    USER_ID = 'meta'
+    APP_ID = 'Llama-2'
+    MODEL_ID = 'llama2-13b-chat'
+    MODEL_VERSION_ID = '79a1af31aa8249a99602fc05687e8f40'
+
     channel = ClarifaiChannel.get_grpc_channel()
     stub = service_pb2_grpc.V2Stub(channel)
 
@@ -65,7 +63,6 @@ def get_recipes(predicted_ingredients):
 
     userDataObject = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
 
-    # Post model outputs request for Clarifai
     post_model_outputs_response = stub.PostModelOutputs(
         service_pb2.PostModelOutputsRequest(
             user_app_id=userDataObject,
@@ -88,24 +85,12 @@ def get_recipes(predicted_ingredients):
         print(post_model_outputs_response.status)
         raise Exception(f"Post model outputs failed, status: {post_model_outputs_response.status.description}")
 
-    # Since we have one input, one output will exist here
     output = post_model_outputs_response.outputs[0]
+    generated_recipes = output.data.text.raw
 
-    print("Completion:\n")
-    print(output.data.text.raw)
+    return generated_recipes
 
-    response = requests.get(llama2_api_url, headers=headers, params=params)
-    if response.status_code == 200:
-        recipes_data = response.json()
-        recipes = []
-        for recipe in recipes_data:
-            title = recipe.get('title', 'Unknown Recipe')
-            instructions = recipe.get('instructions', 'No instructions available')
-            recipes.append(f"{title}: {instructions}")
-        return recipes
-    else:
-        return ["Unable to fetch recipes at the moment. Please try again later."]
-        
+
 
 
 # Streamlit UI
@@ -122,7 +107,7 @@ def main():
         recipes = get_recipes(predicted_ingredients)
 
         st.success("Here are some recipe ideas:")
-        for recipe in recipes:
+        for recipe in generated_recipes:
             st.write(recipe)
         st.write(predicted_ingredients)
 
