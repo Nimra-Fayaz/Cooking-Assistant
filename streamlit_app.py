@@ -83,9 +83,7 @@ def generate_recipes(predicted_ingredients):
         text_object = output.input.data.text
         val = text_object.raw
 
-        generated_recipes += f"The following concepts were predicted for the input prompt:\n"
-        for concept in output.data.concepts:
-            generated_recipes += f"\t{concept.name}: {concept.value:.2f}\n"
+        generated_recipes += f"Here are some recipes from the given ingredients:
 
     return generated_recipes
 
