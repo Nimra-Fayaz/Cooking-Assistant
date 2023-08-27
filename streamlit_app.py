@@ -47,14 +47,13 @@ def get_ingredients(image):
 
 
 # Llama-2 Recipe Generation
-def get_recipes(predicted_ingredients):
-    i_prompt = f"Suggest recipes using these ingredients: {', '.join(predicted_ingredients)}"
-
+def generate_recipes(predicted_ingredients):
+    USER_ID = 'meta'  # Your user ID
     PAT = '10d7dbdf99ec4129be8d5df61fa323ef'  # Your Clarifai Personal Access Token
-    USER_ID = 'meta'
-    APP_ID = 'Llama-2'
-    MODEL_ID = 'llama2-13b-chat'
-    MODEL_VERSION_ID = '79a1af31aa8249a99602fc05687e8f40'
+    APP_ID = 'Llama-2'  # Your app ID
+    MODEL_ID = 'llama2-13b-chat'  # Your model ID
+    MODEL_VERSION_ID = '79a1af31aa8249a99602fc05687e8f40'  # Your model version ID
+    INPUT_PROMPT = f"Suggest recipes using these ingredients: {' , '.join(predicted_ingredients)}"
 
     channel = ClarifaiChannel.get_grpc_channel()
     stub = service_pb2_grpc.V2Stub(channel)
@@ -69,13 +68,7 @@ def get_recipes(predicted_ingredients):
             model_id=MODEL_ID,
             version_id=MODEL_VERSION_ID,
             inputs=[
-                resources_pb2.Input(
-                    data=resources_pb2.Data(
-                        text=resources_pb2.Text(
-                            raw=i_prompt  # Pass the ingredients as text content
-                        )
-                    )
-                )
+                resources_pb2.Input(data=resources_pb2.Data(text=resources_pb2.Text(raw=INPUT_PROMPT))),
             ]
         ),
         metadata=metadata
@@ -83,17 +76,18 @@ def get_recipes(predicted_ingredients):
 
     if post_model_outputs_response.status.code != status_code_pb2.SUCCESS:
         print(post_model_outputs_response.status)
-        raise Exception(f"Post model outputs failed, status: {post_model_outputs_response.status.description}")
+        raise Exception("Failed response, status: " + post_model_outputs_response.status.description)
 
-    # Since we have one input, one output will exist here
-    output = post_model_outputs_response.outputs[0]
+    generated_recipes = ""
+    for output in post_model_outputs_response.outputs:
+        text_object = output.input.data.text
+        val = text_object.raw
 
-    # Extract the generated recipes from the Llama-2 response
-    generated_recipes = output.data.text.raw if hasattr(output.data.text, 'raw') else ""
+        generated_recipes += f"The following concepts were predicted for the input prompt:\n"
+        for concept in output.data.concepts:
+            generated_recipes += f"\t{concept.name}: {concept.value:.2f}\n"
 
     return generated_recipes
-
-
 
 
 
