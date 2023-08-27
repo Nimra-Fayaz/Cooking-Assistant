@@ -118,7 +118,6 @@ def main():
         if st.button("Get Recipes"):
             recipes = get_recipes(predicted_ingredients)
             st.success("Here are some recipe ideas:")
-        for recipe in recipes.split('\n'):
             st.write(recipe)
         st.write("Predicted Ingredients:", predicted_ingredients)
 
