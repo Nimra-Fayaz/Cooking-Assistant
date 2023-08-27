@@ -88,7 +88,7 @@ if post_model_outputs_response.status.code == status_code_pb2.SUCCESS:
 else:
     generated_recipes = f"Failed to generate recipes. Status: {post_model_outputs_response.status.description}"
     
-return generated_recipes
+  return generated_recipes
 
 
 
