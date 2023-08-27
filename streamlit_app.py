@@ -55,7 +55,7 @@ def generate_recipes(predicted_ingredients):
     MODEL_VERSION_ID = '79a1af31aa8249a99602fc05687e8f40'  # Your model version ID
     INPUT_PROMPT = f"Suggest recipes using these ingredients: {' , '.join(predicted_ingredients)}"
 
-    channel = ClarifaiChannel.get_grpc_channel()
+   channel = ClarifaiChannel.get_grpc_channel()
     stub = service_pb2_grpc.V2Stub(channel)
 
     metadata = (('authorization', 'Key ' + PAT),)
@@ -80,15 +80,10 @@ def generate_recipes(predicted_ingredients):
 
     generated_recipes = ""
     for output in post_model_outputs_response.outputs:
-        text_object = output.input.data.text
-        val = text_object.raw
-
-        generated_recipes += f"Here are some recipes from the given ingredients:
+        text_object = output.data.text
+        generated_recipes += text_object.raw if text_object.raw else ""
 
     return generated_recipes
-
-
-
 
 # Streamlit UI
 import streamlit as st
@@ -101,11 +96,11 @@ def main():
 
     if uploaded_file is not None:
         predicted_ingredients = get_ingredients(uploaded_file.read())
-        st.button("Get Recipes")
-        generated_recipes = generate_recipes(predicted_ingredients)
-        st.subheader("Here are some recipe ideas:")
-        st.write(generated_recipes)
-            
-            
+        
+        if st.button("Get Recipes"):
+            generated_recipes = generate_recipes(predicted_ingredients)
+            st.subheader("Generated Recipes:")
+            st.write(generated_recipes)
+
 if __name__ == "__main__":
     main()
