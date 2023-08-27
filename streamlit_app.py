@@ -44,7 +44,6 @@ def get_ingredients(image):
 
 
 import requests
-from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc, status_code_pb2
 
 # Your PAT (Personal Access Token) from Clarifai
 PAT = '10d7dbdf99ec4129be8d5df61fa323ef'
