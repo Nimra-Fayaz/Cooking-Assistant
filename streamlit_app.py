@@ -26,7 +26,7 @@ def get_ingredients(image):
                 resources_pb2.Input(
                     data=resources_pb2.Data(
                         image=resources_pb2.Image(
-                            base64=base64.b64encode(image).decode('utf-8')  # Convert the image to base64
+                            base64=image  # Pass the image content as bytes
                         )
                     )
                 )
@@ -41,7 +41,6 @@ def get_ingredients(image):
     
     predicted_ingredients = [concept.name for concept in post_model_outputs_response.outputs[0].data.concepts]
     return predicted_ingredients
-
 
 
 import os   # importing os for accessing tokens
