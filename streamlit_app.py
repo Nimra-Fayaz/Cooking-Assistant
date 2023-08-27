@@ -80,8 +80,8 @@ def generate_recipes(predicted_ingredients):
     metadata=metadata
 )
 
- # Process the response and extract the generated recipes
- generated_recipes = ""
+    # Process the response and extract the generated recipes
+    generated_recipes = ""
     if post_model_outputs_response.status.code == status_code_pb2.SUCCESS:
        for output in post_model_outputs_response.outputs:
            generated_recipes += f"Generated Recipe:\n{output.data.text.content}\n\n"
