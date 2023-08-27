@@ -109,11 +109,18 @@ def main():
 
     if uploaded_file is not None:
         predicted_ingredients = get_ingredients(uploaded_file.read())
-        if st.button("Get Recipes"):
-            recipes = get_recipes(predicted_ingredients)
-            st.success("Here are some recipe ideas:")
-            st.write(recipes)  # Indent this line properly
-        st.write("Predicted Ingredients:", predicted_ingredients)
 
+        st.subheader("Predicted Ingredients:")
+        st.write(", ".join(predicted_ingredients))
+
+        if st.button("Get Recipes"):
+            generated_recipes = get_recipes(predicted_ingredients)
+            
+            st.subheader("Generated Recipes:")
+            if generated_recipes:
+                st.write(generated_recipes)
+            else:
+                st.write("No recipes generated.")
+            
 if __name__ == "__main__":
-    main()
+     main()
