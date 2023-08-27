@@ -72,7 +72,7 @@ def get_recipes(predicted_ingredients):
                 resources_pb2.Input(
                     data=resources_pb2.Data(
                         text=resources_pb2.Text(
-                            requests=predicted_ingredients  # Pass the ingredients as text content
+                            content=predicted_ingredients  # Pass the ingredients as text content
                         )
                     )
                 )
@@ -88,16 +88,10 @@ def get_recipes(predicted_ingredients):
     # Since we have one input, one output will exist here
     output = post_model_outputs_response.outputs[0]
 
-    recipes = []  # Initialize the recipes list
+    # Extract the generated recipes from the Llama-2 response
+    generated_recipes = output.data.text.raw if hasattr(output.data.text, 'raw') else ""
 
-    # Extract generated recipes from the Llama-2 response (use output.data.text.raw if available)
-    generated_recipes = output.data.text.raw if hasattr(output.data.text, 'raw') else []
-
-    # Append generated recipes to the recipes list
-    for generated_recipe in generated_recipes:
-        recipes.append(f"Generated Recipe: {generated_recipe}")
-
-    return recipes
+    return generated_recipes
 
 
 
@@ -118,8 +112,7 @@ def main():
         if st.button("Get Recipes"):
             recipes = get_recipes(predicted_ingredients)
             st.success("Here are some recipe ideas:")
-            for recipe in recipes:
-                st.write(recipe)  # Indent this line properly
+            st.write(recipes)  # Indent this line properly
         st.write("Predicted Ingredients:", predicted_ingredients)
 
 if __name__ == "__main__":
