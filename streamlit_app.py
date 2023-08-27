@@ -4,7 +4,7 @@ from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
 from clarifai_grpc.grpc.api.status import status_code_pb2
 
 def get_ingredients(image):
-    PAT = 'YOUR_CLARIFAI_PAT'  # Your Personal Access Token from Clarifai
+    PAT = 'ea604e81c34544c5b477cdec8f05eb85'  # Your Personal Access Token from Clarifai
     USER_ID = 'clarifai'  # Your user ID
     APP_ID = 'main'  # Your app ID
     MODEL_ID = 'food-item-v1-recognition'  # The model ID for food recognition
