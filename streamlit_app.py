@@ -95,7 +95,7 @@ def get_recipes(predicted_ingredients):
 
     # Append recipe information to the recipes list
     for generated_text in post_model_outputs_response.outputs:
-    recipes.append(f"Recipe: {generated_text}")
+        recipes.append(f"Recipe: {generated_text}")
 
     return recipes
 
