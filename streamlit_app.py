@@ -72,7 +72,7 @@ def get_recipes(predicted_ingredients):
                 resources_pb2.Input(
                     data=resources_pb2.Data(
                         text=resources_pb2.Text(
-                            raw=ingredients_text  # Pass the ingredients as text content
+                            raw=i_prompt  # Pass the ingredients as text content
                         )
                     )
                 )
