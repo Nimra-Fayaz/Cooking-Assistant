@@ -43,21 +43,6 @@ def get_recipes(predicted_ingredients):
     return recipes_text
 
 
-from nutritionix import Nutritionix
-def calculate_recipe_nutrition(recipes_text):
-    APP_ID = '9de75d97'
-    API_KEY = '28229e90a39a85f8c8e1ec39d6a17418'
-    nutritionix_client = Nutritionix(app_id=APP_ID, api_key=API_KEY)
-    
-    # Assuming recipe_text is a string containing the generated recipe
-    nutrition_data = nutritionix_client.natural.nutrients(query=recipes_text)
-    calories = food_item['nf_calories']
-    protein = food_item['nf_protein']
-    carbs = food_item['nf_total_carbohydrate']
-    return calories, protein, carbs
-
-
-
 # Streamlit UI
 import streamlit as st
 def main():
@@ -72,6 +57,7 @@ def main():
         st.session_state.protein = None
     if 'carbs' not in st.session_state:
         st.session_state.carbs = None
+    st.set_page_config(page_title="Your Cooking Assistant", page_icon="🍳", layout="centered", initial_sidebar_state="collapsed", page_width=800)
     st.title("Your Cooking Assistant")
     # File uploader widget
     uploaded_file = st.file_uploader("Upload an ingredient photo", type=["jpg", "jpeg", "png"])
