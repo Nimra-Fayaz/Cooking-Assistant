@@ -91,8 +91,6 @@ def get_recipes(predicted_ingredients):
     print("Completion:\n")
     print(output.data.text.raw)
 
-    # Extract the generated recipes from the Llama-2 response
-    generated_recipes = "Recipe 1: Placeholder recipe\nRecipe 2: Another placeholder recipe"
     return generated_recipes
 
 
@@ -115,7 +113,7 @@ def main():
         if st.button("Get Recipes"):
             generated_recipes = get_recipes(predicted_ingredients)
             
-            st.subheader("Generated Recipes:")
+            st.subheader("Here are some recipe ideas:")
             st.write(generated_recipes)
             
             
