@@ -44,25 +44,18 @@ def get_recipes(predicted_ingredients):
 
 
 from nutritionix import Nutritionix
-def calculate_recipe_nutrition(recipe_text):
+def calculate_recipe_nutrition(recipes_text):
     APP_ID = '9de75d97'
     API_KEY = '28229e90a39a85f8c8e1ec39d6a17418'
     nutritionix_client = Nutritionix(app_id=APP_ID, api_key=API_KEY)
     
     # Assuming recipe_text is a string containing the generated recipe
-    search_results = nutritionix_client.natural.search(query=recipe_text)
+    nutrition_data = nutritionix_client.natural.nutrients(query=recipes_text)
     
-    if 'foods' in search_results and search_results['foods']:
-        # Get the first food item in the search results
-        food_item = search_results['foods'][0]
         calories = food_item['nf_calories']
         protein = food_item['nf_protein']
         carbs = food_item['nf_total_carbohydrate']
         return calories, protein, carbs
-    else:
-        print("Nutrition data not found for the recipe.")
-        return None, None, None
-
 
 
 
