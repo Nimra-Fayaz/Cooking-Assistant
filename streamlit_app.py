@@ -89,7 +89,7 @@ def get_recipes(predicted_ingredients):
     output = post_model_outputs_response.outputs[0]
 
     print("Completion:\n")
-    print(output.data.text.content)  # Print the raw content
+    print(output.data.text.raw)  # Print the raw content
 
     # Rest of your code to fetch and process recipes
     # ...
@@ -110,7 +110,7 @@ def main():
 
     if uploaded_file is not None:
         predicted_ingredients = get_ingredients(uploaded_file.read())
-        if st.button("Get Recommendations"):
+        if st.button("Get Recipes"):
             recipes = get_recipes(predicted_ingredients)
             st.success("Here are some recipe ideas:")
         for recipe in recipes.split('\n'):
