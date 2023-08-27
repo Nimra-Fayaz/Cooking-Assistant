@@ -118,7 +118,7 @@ def main():
         if st.button("Get Recipes"):
             recipes = get_recipes(predicted_ingredients)
             st.success("Here are some recipe ideas:")
-            st.write(recipe)
+            st.write(recipes)
         st.write("Predicted Ingredients:", predicted_ingredients)
 
 if __name__ == "__main__":
