@@ -72,7 +72,7 @@ def generate_recipes(predicted_ingredients):
         inputs=[
             resources_pb2.Input(
                 data=resources_pb2.Data(
-                    text=resources_pb2.Text(content=output_prompt)
+                    text=resources_pb2.Text(raw=output_prompt)
                 )
             )
         ]
