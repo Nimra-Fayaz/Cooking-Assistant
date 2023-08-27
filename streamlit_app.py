@@ -1,36 +1,47 @@
 import base64
 from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
-from clarifai_grpc.grpc.api import service_pb2_grpc, resources_pb2, service_pb2
+from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
+from clarifai_grpc.grpc.api.status import status_code_pb2
+
 def get_ingredients(image):
-    # Create a Clarifai channel
+    PAT = 'YOUR_CLARIFAI_PAT'  # Your Personal Access Token from Clarifai
+    USER_ID = 'clarifai'  # Your user ID
+    APP_ID = 'main'  # Your app ID
+    MODEL_ID = 'food-item-v1-recognition'  # The model ID for food recognition
+    MODEL_VERSION_ID = 'dfebc169854e429086aceb8368662641'  # Optional: Specify a model version ID
+
     channel = ClarifaiChannel.get_grpc_channel()
-    # Initialize the stub for the V2 API
     stub = service_pb2_grpc.V2Stub(channel)
-    # Set up the request
-    request = service_pb2.PostModelOutputsRequest(
-        model_id='food-item-recognition',
-        inputs=[resources_pb2.Input(data=resources_pb2.Data(image=resources_pb2.Image(base64=image)))],
+
+    metadata = (('authorization', 'Key ' + PAT),)
+
+    userDataObject = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
+
+    post_model_outputs_response = stub.PostModelOutputs(
+        service_pb2.PostModelOutputsRequest(
+            user_app_id=userDataObject,
+            model_id=MODEL_ID,
+            version_id=MODEL_VERSION_ID,
+            inputs=[
+                resources_pb2.Input(
+                    data=resources_pb2.Data(
+                        image=resources_pb2.Image(
+                            base64=base64.b64encode(image).decode('utf-8')  # Convert the image to base64
+                        )
+                    )
+                )
+            ]
+        ),
+        metadata=metadata
     )
-    # Set up the authorization metadata
-    metadata = (('authorization', 'Key ea604e81c34544c5b477cdec8f05eb85'),
-                ('x-user-id', 'clarifai'),
-                ('x-app-id', 'main'))
-    # Make the gRPC call with the metadata
-    response = stub.PostModelOutputs(request, metadata=metadata)
     
-    # Print the entire response for debugging
-    print(response)
+    if post_model_outputs_response.status.code != status_code_pb2.SUCCESS:
+        print(post_model_outputs_response.status)
+        raise Exception("Post model outputs failed, status: " + post_model_outputs_response.status.description)
     
-    # Check if the response contains any outputs
-    if response.outputs:
-        # Extract predicted ingredients from the response
-        predicted_ingredients = [concept.name for concept in response.outputs[0].data.concepts]
-        print("Predicted Ingredients:", predicted_ingredients)  # Print the predicted ingredients
-        return predicted_ingredients
-    else:
-        # Handle case where no concepts were found
-        print("No predicted ingredients found in the response.")
-        return []
+    predicted_ingredients = [concept.name for concept in post_model_outputs_response.outputs[0].data.concepts]
+    return predicted_ingredients
+
 
 
 import os   # importing os for accessing tokens
