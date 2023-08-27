@@ -91,8 +91,13 @@ def get_recipes(predicted_ingredients):
     print("Completion:\n")
     print(output.data.text.raw)  # Print the raw content
 
-    # Rest of your code to fetch and process recipes
-    # ...
+    recipes = []
+
+    # Append recipe information to the recipes list
+    for recipe in recipes_data:
+        title = recipe.get('title', 'Unknown Recipe')
+        instructions = recipe.get('instructions', 'No instructions available')
+        recipes.append(f"{title}: {instructions}")
 
     return recipes
 
