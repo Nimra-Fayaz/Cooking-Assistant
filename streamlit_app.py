@@ -31,7 +31,7 @@ def get_ingredients(image):
 
 
 import os   # importing os for accessing tokens
-os.environ["REPLICATE_API_TOKEN"]="r8_1XFHddW7FUYSULo1Eii4s1GWDLPa8H10hgJDe"  # placing key
+os.environ["REPLICATE_API_TOKEN"]="r8_HqkPlODUgGWvyCPv46RMYYyzPOb7ejO2KZ03o"  # placing key
 import replicate   # importing replicate
 def get_recipes(predicted_ingredients):
     i_prompt = f"Suggest recipes using these ingredients: {', '.join(predicted_ingredients)}"
